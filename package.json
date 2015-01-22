@@ -1,0 +1,45 @@
+{
+  "name": "bunyan-lumberjack",
+  "description": "Send bunyan logs to logstash using the lumberjack protocol.",
+  "keywords": [
+    "bunyan",
+    "logstash",
+    "logstash forwarder",
+    "lumberjack",
+    "lumberjack protocol",
+    "logs"
+  ],
+  "version": "0.1.0",
+  "author": "Jason Walton <dev@lucid.thedreaming.org> (https://github.com/jwalton)",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://raw.github.com/jwalton/lol-js/master/LICENSE"
+    }
+  ],
+  "scripts": {
+    "prepublish": "coffee -c -o lib src"
+  },
+  "main": "./lib/index.js",
+  "directories": {
+    "lib": "./lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benbria/node-logstash-forwarder"
+  },
+  "dependencies": {
+    "lumberjack-protocol": "^0.1.0"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "coffee-script": "^1.8.0",
+    "mocha": "^1.21.4"
+  },
+  "peerDependencies": {
+    "bunyan": "*"
+  },
+  "engines": {
+    "node": ">=0.10.1"
+  }
+}
