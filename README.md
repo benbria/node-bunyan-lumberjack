@@ -65,7 +65,7 @@ want to pass `host`, `port`, and if you're using a self-signed certificate, `ca`
 concrete example.
 
 If you're having problems connecting, have a look at the
-[lumberjack-proto troubleshooting section](https://github.com/benbria/node-lumberjack-proto/blob/master/README.md#troubleshooting).
+[lumberjack-proto troubleshooting section](https://github.com/benbria/node-lumberjack-protocol/blob/master/README.md#troubleshooting).
 
 ### lumberjackOptions
 
