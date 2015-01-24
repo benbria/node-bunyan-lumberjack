@@ -96,7 +96,7 @@ a [working logstash server up and running](http://www.thedreaming.org/2014/11/21
 ### Create a Certificate
 
 First, we need a certificate and private key on the logstash server.  You can generate a self-signed
-certificate:
+certificate (TODO: Need to fix this.  Node's `tls` doesn't like self-signed certificates.):
 
     $ sudo mkdir -p /etc/logstash/ssl
     $ sudo openssl req -new -nodes -x509 \
