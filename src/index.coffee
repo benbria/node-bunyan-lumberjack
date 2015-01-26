@@ -29,7 +29,7 @@ class BunyanLumberjackStream extends Writable
 
         @_host = require('os').hostname()
         @_tags = options.tags ? ['bunyan']
-        @_type = options.type
+        @_type = options.type ? 'json'
         @_application = options.appName ? process.title
 
         @on 'finish', =>
@@ -57,13 +57,18 @@ class BunyanLumberjackStream extends Writable
         # Add some extra fields
         entry.tags ?= @_tags
         entry.source = "#{host}/#{@_application}"
-        if @_type? then entry.type = @_type
 
-        @_client.writeDataFrame {
+        dataFrame = {
             line: JSON.stringify(entry)
             host: host
             bunyanLevel: bunyanLevel
         }
+
+        # Set type directly on the data frame, so we can use it for conditionals up in
+        # logstash filters section.
+        if @_type? then dataFrame.type = @_type
+
+        @_client.writeDataFrame dataFrame
 
         done()
 

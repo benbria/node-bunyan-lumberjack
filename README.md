@@ -85,7 +85,7 @@ The name to use for the application in the `source` field.  Defaults to `process
 
 ### type
 
-If specified, will be added to the entry before being sent to logstash.
+If specified, will be added to the entry before being sent to logstash.  Defaults to 'json'.
 
 Tutorial
 ========
@@ -120,22 +120,48 @@ any self-signed certificate.
 
 ### Configure Logstash
 
-In logstash.conf, add the following input:
+The simple way to do this is to add this to the `input` section of logstash.conf:
 
     lumberjack {
         codec => json
         port => 5000
-        type => "logs"
         ssl_certificate => "/etc/logstash/ssl/logstash.crt"
         ssl_key => "/etc/logstash/ssl/logstash.key"
     }
 
-The `codec` must be set to `json` to work correctly with `lumberjack-proto`.
+Here the `codec` must be set to `json` to work correctly with `bunyan-lumberjack`.
+
+Alternatively, by default bunyan-lumberjack will set the `type` to 'json', so if you want to be
+able to share a single lumberjack input for multiple different types of logs:
+
+    input {
+        lumberjack {
+            port => 5000
+            ssl_certificate => "/opt/ssl/logstash.crt"
+            ssl_key => "/opt/ssl/logstash.key"
+        }
+    }
+
+    filter {
+        if [type] == "json" {
+            json {
+                source => "message"
+            }
+        }
+
+        if [type] == "syslog" {
+            grok {
+                match => { "message" => "%{SYSLOGLINE}" }
+            }
+        }
+
+        # Other filters go here...
+    }
+
 
 ### The Client
 
 On the client side, we need a copy of the `logstash.crt` file we just created, then:
-
 
     var fs = require('fs');
     var bunyan = require('bunyan');
@@ -149,6 +175,9 @@ On the client side, we need a copy of the `logstash.crt` file we just created, t
         }
     });
 
+    outStream.on('connect', function() {
+        console.log("Connected!");
+    });
     outStream.on('dropped', function(count) {
         console.log("ERROR: Dropped " + count + " messages!");
     });
