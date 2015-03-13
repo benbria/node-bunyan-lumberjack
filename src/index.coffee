@@ -49,8 +49,9 @@ class BunyanLumberjackStream extends Writable
         entry.message = entry.msg ? ''
         delete entry.msg
 
-        entry['@timestamp'] = entry.time.toISOString()
-        delete entry.time
+        if entry.time?
+            entry['@timestamp'] = entry.time.toISOString()
+            delete entry.time
 
         delete entry.v
 
