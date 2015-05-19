@@ -1,3 +1,5 @@
+[![NPM](https://nodei.co/npm/bunyan-lumberjack.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/bunyan-lumberjack/)
+
 What is it?
 ===========
 
