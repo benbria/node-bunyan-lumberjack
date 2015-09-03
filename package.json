@@ -14,7 +14,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://raw.github.com/jwalton/lol-js/master/LICENSE"
+      "url": "https://raw.github.com/benbria/node-bunyan-lumberjack/master/LICENSE"
     }
   ],
   "scripts": {
