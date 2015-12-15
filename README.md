@@ -72,7 +72,7 @@ If you're having problems connecting, have a look at the
 ### lumberjackOptions
 
 Any option that can be passed to [lumberjack-proto](https://github.com/benbria/node-lumberjack-proto)
-can be passed here.
+can be passed here.  If unspecified, this defaults to `{unref: true}`.
 
 Note that `lumberjackOptions.allowDrop` is passed a lumberjack data frame; this will have a
 `line` field, which is the JSON string to be sent to logstash, a `host` field, and a `bunyanLevel` field.
@@ -193,5 +193,3 @@ On the client side, we need a copy of the `logstash.crt` file we just created, t
     });
 
     log.info("This should work!");
-
-

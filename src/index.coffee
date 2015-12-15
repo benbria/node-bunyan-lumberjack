@@ -74,6 +74,11 @@ class BunyanLumberjackStream extends Writable
         done()
 
 module.exports = (options={}) ->
+    if !options.lumberjackOptions?
+        options.lumberjackOptions = {}
+    if !options.lumberjackOptions.unref?
+        options.lumberjackOptions.unref = true
+
     return new BunyanLumberjackStream(
         options.tlsOptions,
         options.lumberjackOptions,

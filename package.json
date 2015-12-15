@@ -29,7 +29,7 @@
     "url": "https://github.com/benbria/node-logstash-forwarder"
   },
   "dependencies": {
-    "lumberjack-protocol": "^0.1.4"
+    "lumberjack-protocol": "^1.0.0"
   },
   "peerDependencies": {
     "bunyan": "*"
