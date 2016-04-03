@@ -72,6 +72,10 @@ class BunyanLumberjackStream extends Writable
 
         # Add some extra fields
         entry.tags ?= @_tags
+        
+        if entry._md
+          entry["@metadata"] = entry._md
+          delete entry._md
         unless entry["@metadata"]?
           entry["@metadata"] = @_metadata
         else
