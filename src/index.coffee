@@ -17,6 +17,20 @@ clone = (obj) ->
     answer[key] = value for key, value of obj
     return answer
 
+###
+Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
+@param obj1
+@param obj2
+@returns obj3 a new object based on obj1 and obj2
+###
+merge_options = (obj1, obj2) ->
+  obj3 = {}
+  for attrname of obj1
+    obj3[attrname] = obj1[attrname]
+  for attrname of obj2
+    obj3[attrname] = obj2[attrname]
+  obj3
+
 class BunyanLumberjackStream extends Writable
     constructor: (tlsOptions, lumberjackOptions={}, options={}) ->
         super {objectMode: true}
@@ -31,6 +45,7 @@ class BunyanLumberjackStream extends Writable
         @_tags = options.tags ? ['bunyan']
         @_type = options.type ? 'json'
         @_application = options.appName ? process.title
+        @_metadata = options.metadata ? {}
 
         @on 'finish', =>
             @_client.close()
@@ -57,6 +72,14 @@ class BunyanLumberjackStream extends Writable
 
         # Add some extra fields
         entry.tags ?= @_tags
+        
+        if entry._md
+          entry["@metadata"] = entry._md
+          delete entry._md
+        unless entry["@metadata"]?
+          entry["@metadata"] = @_metadata
+        else
+          entry["@metadata"] = merge_options(@_metadata, entry["@metadata"])
         entry.source = "#{host}/#{@_application}"
 
         dataFrame = {

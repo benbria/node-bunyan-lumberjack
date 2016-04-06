@@ -17,6 +17,7 @@ Features
 * Generated entries in logstash are identical to what would be produced by
   [bunyan-logstash-tcp](https://github.com/chris-rock/bunyan-logstash-tcp), making it easy to
   switch from one to the other.
+* Support for @metadata on app & item level (with _md shorthand)
 
 There are alternatives to this package if you don't need/want encryption:
 
@@ -50,7 +51,8 @@ complere end-to-end setup, but the basics are:
                         // If we have to drop logs, drop INFO level logs and lower - keep errors.
                         return logEntry.level <= bunyan.INFO
                     }
-                }
+                },
+                metadata:{beat:"example",type:"default"}
             })
         }]
     });
@@ -88,6 +90,10 @@ The name to use for the application in the `source` field.  Defaults to `process
 ### type
 
 If specified, will be added to the entry before being sent to logstash.  Defaults to 'json'.
+
+### metadata
+
+If specified, will be added to the entry before being sent to logstash.  Can be used for extra parameters that will stay within logstash (logstash will not forward these to elasticsearch).  Defaults to empty object.
 
 Tutorial
 ========
@@ -174,7 +180,8 @@ On the client side, we need a copy of the `logstash.crt` file we just created, t
             host: 'logstash.mycorp.com',
             port: 5000,
             ca: [fs.readFileSync('path/to/logstash.crt', {encoding: 'utf-8'})]
-        }
+        },
+        metadata:{beat:"lowercase-name",type:"default"}
     });
 
     outStream.on('connect', function() {
@@ -193,3 +200,5 @@ On the client side, we need a copy of the `logstash.crt` file we just created, t
     });
 
     log.info("This should work!");
+    
+    log.info({_md:{type:"custom"}},"Item-based custom metadata!");
