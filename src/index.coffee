@@ -72,7 +72,7 @@ class BunyanLumberjackStream extends Writable
 
         # Add some extra fields
         entry.tags ?= @_tags
-        
+
         if entry._md
           entry["@metadata"] = entry._md
           delete entry._md
@@ -83,7 +83,7 @@ class BunyanLumberjackStream extends Writable
         entry.source = "#{host}/#{@_application}"
 
         dataFrame = {
-            line: JSON.stringify(entry)
+            line: JSON.stringify(entry, bunyan.safeCycles())
             host: host
             bunyanLevel: bunyanLevel
         }
