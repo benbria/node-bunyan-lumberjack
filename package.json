@@ -29,7 +29,7 @@
     "url": "https://github.com/benbria/node-bunyan-lumberjack"
   },
   "dependencies": {
-    "lumberjack-protocol": "^1.0.5"
+    "lumberjack-protocol": "^1.0.6"
   },
   "peerDependencies": {
     "bunyan": "*"
