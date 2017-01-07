@@ -35,27 +35,29 @@ Usage
 =====
 
 See [below](#tutorial) for a
-complere end-to-end setup, but the basics are:
+complete end-to-end setup, but the basics are:
 
-    var bunyanLumberjackStream = require('bunyan-lumberjack');
+```javascript
+var bunyanLumberjackStream = require('bunyan-lumberjack');
 
-    var log = bunyan.createLogger({
-        name: "myLog",
-        streams: [{
-            level:  'info',
-            type:   'raw',
-            stream: bunyanLumberjackStream({
-                tlsOptions: {host: 'logstash.mycorp.com', port: 5000},
-                lumberjackOptions: {
-                    allowDrop: function(logEntry) {
-                        // If we have to drop logs, drop INFO level logs and lower - keep errors.
-                        return logEntry.level <= bunyan.INFO
-                    }
-                },
-                metadata:{beat:"example",type:"default"}
-            })
-        }]
-    });
+var log = bunyan.createLogger({
+    name: "myLog",
+    streams: [{
+        level:  'info',
+        type:   'raw',
+        stream: bunyanLumberjackStream({
+            tlsOptions: {host: 'logstash.mycorp.com', port: 5000},
+            lumberjackOptions: {
+                allowDrop: function(logEntry) {
+                    // If we have to drop logs, drop INFO level logs and lower - keep errors.
+                    return logEntry.level <= bunyan.INFO
+                }
+            },
+            metadata:{beat:"example",type:"default"}
+        })
+    }]
+});
+```
 
 Options
 =======
@@ -171,34 +173,35 @@ able to share a single lumberjack input for multiple different types of logs:
 
 On the client side, we need a copy of the `logstash.crt` file we just created, then:
 
-    var fs = require('fs');
-    var bunyan = require('bunyan');
-    var bunyanLumberjackStream = require('bunyan-lumberjack');
+```javascript
+var fs = require('fs');
+var bunyan = require('bunyan');
+var bunyanLumberjackStream = require('bunyan-lumberjack');
 
-    outStream = bunyanLumberjackStream({
-        tlsOptions: {
-            host: 'logstash.mycorp.com',
-            port: 5000,
-            ca: [fs.readFileSync('path/to/logstash.crt', {encoding: 'utf-8'})]
-        },
-        metadata:{beat:"lowercase-name",type:"default"}
-    });
+outStream = bunyanLumberjackStream({
+    tlsOptions: {
+        host: 'logstash.mycorp.com',
+        port: 5000,
+        ca: [fs.readFileSync('path/to/logstash.crt', {encoding: 'utf-8'})]
+    },
+    metadata:{beat:"lowercase-name",type:"default"}
+});
 
-    outStream.on('connect', function() {
-        console.log("Connected!");
-    });
-    outStream.on('dropped', function(count) {
-        console.log("ERROR: Dropped " + count + " messages!");
-    });
-    outStream.on('disconnect', function(err) {
-        console.log("WARN : Disconnected", err);
-    });
+outStream.on('connect', function() {
+    console.log("Connected!");
+});
+outStream.on('dropped', function(count) {
+    console.log("ERROR: Dropped " + count + " messages!");
+});
+outStream.on('disconnect', function(err) {
+    console.log("WARN : Disconnected", err);
+});
 
-    var log = bunyan.createLogger({
-        name: "myLog",
-        streams: [{level: 'info', type: 'raw', stream: outStream}]
-    });
+var log = bunyan.createLogger({
+    name: "myLog",
+    streams: [{level: 'info', type: 'raw', stream: outStream}]
+});
 
-    log.info("This should work!");
-    
-    log.info({_md:{type:"custom"}},"Item-based custom metadata!");
+log.info("This should work!");
+
+log.info({_md:{type:"custom"}},"Item-based custom metadata!");
