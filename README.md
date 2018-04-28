@@ -3,6 +3,8 @@
 What is it?
 ===========
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/benbria/node-bunyan-lumberjack.svg)](https://greenkeeper.io/)
+
 bunyan-lumberjack is a stream for [Bunyan](https://github.com/trentm/node-bunyan) which takes in
 Bunyan logs and writes the results to Logstash via the lumberjack protocol (used by
 [logstash-forwarder](https://github.com/elasticsearch/logstash-forwarder)).
